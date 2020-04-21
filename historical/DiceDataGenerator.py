@@ -10,6 +10,8 @@
 # 200 million rolls (10 million, 20 times) will probably take 4 hours
 # 1 billion rolls (50 million, 20 times) will probably take 20 hours...
 
+# This script performed its job admirably!
+
 import numpy as np
 import time
 
