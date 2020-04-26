@@ -4,25 +4,120 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# All the frequency dataframes
+one = pd.read_csv('data/dice runs/ThreeDiceData50.txt', index_col='Trial')
+two = pd.read_csv('data/dice runs/ThreeDiceData100.txt', index_col='Trial')
+three = pd.read_csv('data/dice runs/ThreeDiceData500.txt', index_col='Trial')
+four = pd.read_csv('data/dice runs/ThreeDiceData1000.txt', index_col='Trial')
+five = pd.read_csv('data/dice runs/ThreeDiceData5000.txt', index_col='Trial')
+six = pd.read_csv('data/dice runs/ThreeDiceData10000.txt', index_col='Trial')
+seven = pd.read_csv('data/dice runs/ThreeDiceData50000.txt', index_col='Trial')
+eight = pd.read_csv('data/dice runs/ThreeDiceData100000.txt', index_col='Trial')
+nine = pd.read_csv('data/dice runs/ThreeDiceData500000.txt', index_col='Trial')
+ten = pd.read_csv('data/dice runs/ThreeDiceData1000000.txt', index_col='Trial')
+eleven = pd.read_csv('data/dice runs/ThreeDiceData5000000.txt', index_col='Trial')
+twelve = pd.read_csv('data/dice runs/ThreeDiceData10000000.txt', index_col='Trial')
 
-def expectationvalue(dataframe, trial):
+datalist = [one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve]
+rollslist = [50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]
+
+# All the sum, mean, variance dataframes
+sum50 = pd.read_csv('data/sum mean and variance/sumMeanAndVar50.csv', index_col='Sum')
+sum100 = pd.read_csv('data/sum mean and variance/sumMeanAndVar100.csv', index_col='Sum')
+sum500 = pd.read_csv('data/sum mean and variance/sumMeanAndVar500.csv', index_col='Sum')
+sum1000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar1000.csv', index_col='Sum')
+sum5000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar5000.csv', index_col='Sum')
+sum10000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar10000.csv', index_col='Sum')
+sum50000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar50000.csv', index_col='Sum')
+sum100000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar100000.csv', index_col='Sum')
+sum500000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar500000.csv', index_col='Sum')
+sum1000000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar1000000.csv', index_col='Sum')
+sum5000000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar5000000.csv', index_col='Sum')
+sum10000000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar10000000.csv', index_col='Sum')
+
+sumMeanVarList = [sum50, sum100, sum500, sum1000, sum5000, sum10000, sum50000, sum100000, sum500000, sum1000000, sum5000000, sum10000000]
+
+# All the trial, expectation, variance dataframes
+trials50 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar50.csv', index_col='Trial')
+trials100 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar100.csv', index_col='Trial')
+trials500 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar500.csv', index_col='Trial')
+trials1000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar1000.csv', index_col='Trial')
+trials5000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar5000.csv', index_col='Trial')
+trials10000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar10000.csv', index_col='Trial')
+trials50000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar50000.csv', index_col='Trial')
+trials100000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar100000.csv', index_col='Trial')
+trials500000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar500000.csv', index_col='Trial')
+trials1000000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar1000000.csv', index_col='Trial')
+trials5000000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar5000000.csv', index_col='Trial')
+trials10000000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar10000000.csv', index_col='Trial')
+
+trialExpVarList = [trials50, trials100, trials500, trials1000, trials5000, trials10000, trials50000, trials100000, trials500000, trials1000000, trials5000000, trials10000000]
+
+
+def expectationvalue(dataframe, trial, rolls, savetofile=False):
+    """Calculates the expectation value and variance across trials.
+    Should be around <x> = 10.5."""
     values = dataframe.transpose().loc[:, trial].values
     total = np.sum(values)
     expectation = 0
     for i in range(len(values)):
-        expectation += (i + 3) * values[i] / total
-    variance = 0
+        expectation += (i + 3) * values[i] / total  # This is x*p(x), where x = 3, 4, etc.
+    variance = 0                                    # and p(x) = values/total (i.e. probability)
     for j in range(len(values)):
-        variance += ((j + 3) - expectation)**2
-    print(f'In trial {trial}, expectation value is {expectation} with variance {variance}.')
+        variance += ((j + 3) - expectation)**2      # (x - mu)**2
+    print(f'In trial {trial}, expectation value is {expectation} with variance {variance} and StDev {np.sqrt(variance)}.')
+    if savetofile is not False:
+        with open(f'data/trial expectation and variance/trialExpectationAndVar{rolls}.csv', 'a') as file:
+            file.write(f'\n{trial},{expectation},{variance}')
 
 
-def meanandvariance(dataframe, rolls):
+def meanandvariance(dataframe, rolls, savetofile=False):
+    """Calculates the percent mean and variance (in percent squared) for
+    each sum (3, 4, 5, ... , 18. Then calls expectationvalue() for the
+    expectation value and variance of trials 1 through 20"""
     for dicesum in dataframe.columns.values:
+        # Columns are 3, 4, ... , 18. probmean converts total rolls to
+        # a percentage of total rolls, so 10 and 11 become like 12.5%.
         probmean = np.average(dataframe.loc[:, dicesum].values) / rolls
         variance = 0
+        # Variance is sum of (x - mu)**2. In this case, it has units
+        # of percent squared, which is not intuitive.
         for i in dataframe.loc[:, dicesum].values:
             variance += ((i / rolls) - probmean) ** 2
-        print(f'{dicesum} occurs with probability mean {probmean} and variance {variance}.')
+        print(f'{dicesum} occurs with probability mean {probmean}, variance {variance}, and StDev {np.sqrt(variance)}.')
+        if savetofile is not False:
+            with open(f'data/sum mean and variance/sumMeanAndVar{rolls}.csv', 'a') as file:
+                file.write(f'\n{dicesum},{probmean},{variance}')
     for trial in dataframe.transpose().columns.values:
-        expectationvalue(dataframe, trial=trial)
+        # Also get the expectation and variance of the twenty trials
+        # by calling the expectationvalue() function defined earlier
+        expectationvalue(dataframe, trial=trial, savetofile=savetofile, rolls=rolls)
+
+
+def barChartTheThing(dataframetoplot,
+                     columntoplot,
+                     title=None,
+                     titlefontsize=15,
+                     xaxislabel=None,
+                     yaxislabel=None,
+                     color='xkcd:cerulean blue',
+                     islogscale=False,
+                     figuredimensions=(8, 6),
+                     filepathtosavepng=None,
+                     legend=False):
+    dataframetoplot.plot(kind='bar',
+                         y=columntoplot,
+                         color=color,
+                         figsize=figuredimensions,
+                         logy=islogscale,
+                         legend=legend)
+    plt.xlabel(xlabel=xaxislabel)
+    plt.ylabel(ylabel=yaxislabel)
+    plt.title(label=title, fontsize=titlefontsize)
+    if filepathtosavepng is not None:
+        plt.savefig(fname=filepathtosavepng,
+                    bbox_inches='tight',
+                    orientation="landscape",
+                    pad_inches=0.2,
+                    dpi=600)
+    return plt.show()

@@ -18,7 +18,7 @@ import time
 print("This is for the final project in probability and statistics.")
 print("We have to determine likelihood of each sum. (1 way for sum 3, 1 way for sum 18, etc.)")
 
-trialstorun = [1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]
+trialstorun = [50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]
 trialscompleted = 0
 aggregatesums = {'3': 0,
                  '4': 0,
@@ -41,7 +41,7 @@ start = time.process_time()
 for m in range(len(trialstorun)):
     totalrolls = trialstorun[m]
     trialnumber = 1
-    # file = open(f"dice data files/ThreeDiceData{totalrolls}.txt", "w")
+    # file = open(f"data/dice runs/ThreeDiceData{totalrolls}.txt", "w")
     # file.write("Trial,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18\n")
     for k in range(20):
         for i in range(totalrolls):
@@ -49,9 +49,7 @@ for m in range(len(trialstorun)):
             die2 = np.random.randint(low=1, high=7, size=1)
             die3 = np.random.randint(low=1, high=7, size=1)
             alldice = die1 + die2 + die3
-            # print(f"Trial {i+1}, die1 is {die1[0]}, die2 is {die2[0]}, die3 is {die3[0]}, sum is {alldice[0]}")
             print(f"{i + 1}\t{totalrolls}\t{(20 * len(trialstorun)) - trialscompleted}\n")
-            # file.write(f"{i+1},{die1[0]},{die2[0]},{die3[0]},{alldice[0]}\n")
             aggregatesums[str(alldice[0])] += 1
 
         trialscompleted += 1
