@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# All the frequency dataframes
+# All the frequency dataframes, normalized using these
+# lambda things I don't quite understand.
 one = pd.read_csv('data/dice runs/ThreeDiceData50.txt', index_col='Trial')
 two = pd.read_csv('data/dice runs/ThreeDiceData100.txt', index_col='Trial')
 three = pd.read_csv('data/dice runs/ThreeDiceData500.txt', index_col='Trial')
@@ -21,37 +22,23 @@ twelve = pd.read_csv('data/dice runs/ThreeDiceData10000000.txt', index_col='Tria
 datalist = [one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve]
 rollslist = [50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000]
 
-# All the sum, mean, variance dataframes
-sum50 = pd.read_csv('data/sum mean and variance/sumMeanAndVar50.csv', index_col='Sum')
-sum100 = pd.read_csv('data/sum mean and variance/sumMeanAndVar100.csv', index_col='Sum')
-sum500 = pd.read_csv('data/sum mean and variance/sumMeanAndVar500.csv', index_col='Sum')
-sum1000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar1000.csv', index_col='Sum')
-sum5000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar5000.csv', index_col='Sum')
-sum10000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar10000.csv', index_col='Sum')
-sum50000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar50000.csv', index_col='Sum')
-sum100000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar100000.csv', index_col='Sum')
-sum500000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar500000.csv', index_col='Sum')
-sum1000000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar1000000.csv', index_col='Sum')
-sum5000000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar5000000.csv', index_col='Sum')
-sum10000000 = pd.read_csv('data/sum mean and variance/sumMeanAndVar10000000.csv', index_col='Sum')
+# Normalized dataframes.
+slice1 = pd.read_csv('data/normalized dice runs/normalized50.csv', index_col='Trial')
+slice2 = pd.read_csv('data/normalized dice runs/normalized100.csv', index_col='Trial')
+slice3 = pd.read_csv('data/normalized dice runs/normalized500.csv', index_col='Trial')
+slice4 = pd.read_csv('data/normalized dice runs/normalized1000.csv', index_col='Trial')
+slice5 = pd.read_csv('data/normalized dice runs/normalized5000.csv', index_col='Trial')
+slice6 = pd.read_csv('data/normalized dice runs/normalized10000.csv', index_col='Trial')
+slice7 = pd.read_csv('data/normalized dice runs/normalized50000.csv', index_col='Trial')
+slice8 = pd.read_csv('data/normalized dice runs/normalized100000.csv', index_col='Trial')
+slice9 = pd.read_csv('data/normalized dice runs/normalized500000.csv', index_col='Trial')
+slice10 = pd.read_csv('data/normalized dice runs/normalized1000000.csv', index_col='Trial')
+slice11 = pd.read_csv('data/normalized dice runs/normalized5000000.csv', index_col='Trial')
+slice12 = pd.read_csv('data/normalized dice runs/normalized10000000.csv', index_col='Trial')
 
-sumMeanVarList = [sum50, sum100, sum500, sum1000, sum5000, sum10000, sum50000, sum100000, sum500000, sum1000000, sum5000000, sum10000000]
+slicelist = [slice1, slice2, slice3, slice4, slice5, slice6, slice7, slice8, slice9, slice10, slice11, slice12]
 
-# All the trial, expectation, variance dataframes
-trials50 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar50.csv', index_col='Trial')
-trials100 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar100.csv', index_col='Trial')
-trials500 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar500.csv', index_col='Trial')
-trials1000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar1000.csv', index_col='Trial')
-trials5000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar5000.csv', index_col='Trial')
-trials10000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar10000.csv', index_col='Trial')
-trials50000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar50000.csv', index_col='Trial')
-trials100000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar100000.csv', index_col='Trial')
-trials500000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar500000.csv', index_col='Trial')
-trials1000000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar1000000.csv', index_col='Trial')
-trials5000000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar5000000.csv', index_col='Trial')
-trials10000000 = pd.read_csv('data/trial expectation and variance/trialExpectationAndVar10000000.csv', index_col='Trial')
-
-trialExpVarList = [trials50, trials100, trials500, trials1000, trials5000, trials10000, trials50000, trials100000, trials500000, trials1000000, trials5000000, trials10000000]
+lawoflargenumbers = pd.read_csv('data/rollquantityvariance.csv', index_col='Roll Quantity')
 
 
 def expectationvalue(dataframe, trial, rolls, savetofile=False):
@@ -121,3 +108,8 @@ def barChartTheThing(dataframetoplot,
                     pad_inches=0.2,
                     dpi=600)
     return plt.show()
+
+
+def saveThisGraph(filepathtosavepng):
+    plt.savefig(fname=filepathtosavepng, bbox_inches='tight', orientation="landscape", pad_inches=0.2, dpi=600)
+    return print('Graph saved!')
