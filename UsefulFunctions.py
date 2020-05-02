@@ -110,6 +110,6 @@ def barChartTheThing(dataframetoplot,
     return plt.show()
 
 
-def saveThisGraph(filepathtosavepng):
-    plt.savefig(fname=filepathtosavepng, bbox_inches='tight', orientation="landscape", pad_inches=0.2, dpi=600)
+def saveThisGraph(filepathtosavepng, dpi=600):
+    plt.savefig(fname=filepathtosavepng, bbox_inches='tight', orientation="landscape", pad_inches=0.2, dpi=dpi)
     return print('Graph saved!')
