@@ -38,20 +38,20 @@ aggregatesums = {'3': 0,
                  '18': 0}
 
 start = time.process_time()
-for m in range(len(trialstorun)):
-    totalrolls = trialstorun[m]
+for m in range(len(trialstorun)):           # m goes from 0 to 11
+    totalrolls = trialstorun[m]             # Converts e.g. "3" into "1000"
     trialnumber = 1
     # file = open(f"data/dice runs/ThreeDiceData{totalrolls}.txt", "w")
     # file.write("Trial,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18\n")
-    for k in range(20):
+    for k in range(20):  # Repeat e.g. 1000 rolls twenty times.
         for i in range(totalrolls):
-            die1 = np.random.randint(low=1, high=7, size=1)
+            die1 = np.random.randint(low=1, high=7, size=1)     # "roll" the three dice
             die2 = np.random.randint(low=1, high=7, size=1)
             die3 = np.random.randint(low=1, high=7, size=1)
-            alldice = die1 + die2 + die3
-            print(f"{i + 1}\t{totalrolls}\t{(20 * len(trialstorun)) - trialscompleted}\n")
-            aggregatesums[str(alldice[0])] += 1
-
+            alldice = die1 + die2 + die3                        # Add up each die roll
+            print(f"{i + 1}\t{totalrolls}\t{(20 * len(trialstorun)) - trialscompleted}\n")  # (for debugging)
+            aggregatesums[str(alldice[0])] += 1                 # Tally this dice sum in the
+                                                                # Python dict called "aggregatesums"
         trialscompleted += 1
         # file.write(f"{trialnumber},"
         #            f"{aggregatesums['3']},"
